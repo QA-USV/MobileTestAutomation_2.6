@@ -86,9 +86,7 @@ public class MainActivityIdlingTests {
         recycleView.check(matches(isDisplayed()));
         recycleView.check(matches(CustomViewMatcher.recyclerViewSizeMatcher(10)));
         recycleView.check(CustomViewAssertions.isRecyclerView());
-
     }
-
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
