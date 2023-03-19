@@ -8,7 +8,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -34,7 +33,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityIdlingTest {
+public class MainActivityIdlingTests {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
@@ -68,6 +67,28 @@ public class MainActivityIdlingTest {
         numberView.check(matches(isDisplayed()));
         numberView.check(matches(withText("7")));
     }
+
+    @Test
+    public void galleryItemsListTest() {
+        ViewInteraction menuButton = onView(childAtPosition(allOf(withId(R.id.toolbar),
+                        childAtPosition(
+                                withClassName(is("com.google.android.material.appbar.AppBarLayout")),
+                                0)),
+                1));
+        menuButton.check(matches(isDisplayed()));
+        menuButton.perform(click());
+
+        ViewInteraction galleryButton = onView(withId(R.id.nav_gallery));
+        galleryButton.check(matches(isDisplayed()));
+        galleryButton.perform(click());
+
+        ViewInteraction recycleView = onView(withId(R.id.recycle_view));
+        recycleView.check(matches(isDisplayed()));
+        recycleView.check(matches(CustomViewMatcher.recyclerViewSizeMatcher(10)));
+        recycleView.check(CustomViewAssertions.isRecyclerView());
+
+    }
+
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
